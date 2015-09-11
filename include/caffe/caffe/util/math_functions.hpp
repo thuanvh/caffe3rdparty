@@ -12,7 +12,7 @@
 
 namespace caffe {
 
-// Decaf gemm provides a simpler interface to the gemm functions, with the
+// Caffe gemm provides a simpler interface to the gemm functions, with the
 // limitation that the data has to be contiguous in memory.
 template <typename Dtype>
 void caffe_cpu_gemm(const CBLAS_TRANSPOSE TransA,
@@ -89,6 +89,9 @@ template <typename Dtype>
 void caffe_exp(const int n, const Dtype* a, Dtype* y);
 
 template <typename Dtype>
+void caffe_log(const int n, const Dtype* a, Dtype* y);
+
+template <typename Dtype>
 void caffe_abs(const int n, const Dtype* a, Dtype* y);
 
 template <typename Dtype>
@@ -134,10 +137,10 @@ DEFINE_CAFFE_CPU_UNARY_FUNC(sign, y[i] = caffe_sign<Dtype>(x[i]));
 // The name sngbit is meant to avoid conflicts with std::signbit in the macro.
 // The extra parens are needed because CUDA < 6.5 defines signbit as a macro,
 // and we don't want that to expand here when CUDA headers are also included.
-DEFINE_CAFFE_CPU_UNARY_FUNC(sgnbit, \
-    y[i] = static_cast<bool>((std::signbit)(x[i])));
+//DEFINE_CAFFE_CPU_UNARY_FUNC(sgnbit, \
+//    y[i] = static_cast<bool>((std::signbit)(x[i])));
 
-//DEFINE_CAFFE_CPU_UNARY_FUNC(sgnbit, y[i] = signbit(x[i]));
+DEFINE_CAFFE_CPU_UNARY_FUNC(sgnbit, y[i] = signbit(x[i]));
 
 DEFINE_CAFFE_CPU_UNARY_FUNC(fabs, y[i] = std::fabs(x[i]));
 
@@ -206,6 +209,9 @@ template <typename Dtype>
 void caffe_gpu_exp(const int n, const Dtype* a, Dtype* y);
 
 template <typename Dtype>
+void caffe_gpu_log(const int n, const Dtype* a, Dtype* y);
+
+template <typename Dtype>
 void caffe_gpu_powx(const int n, const Dtype* a, const Dtype b, Dtype* y);
 
 // caffe_gpu_rng_uniform with two arguments generates integers in the range
@@ -269,7 +275,7 @@ void caffe_gpu_##name<double>(const int n, const double* x, double* y) { \
       n, x, y); \
 }
 
-#endif  // CPU_ONLY
+#endif  // !CPU_ONLY
 
 }  // namespace caffe
 

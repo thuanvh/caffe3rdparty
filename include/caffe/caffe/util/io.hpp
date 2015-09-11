@@ -1,21 +1,14 @@
 #ifndef CAFFE_UTIL_IO_H_
 #define CAFFE_UTIL_IO_H_
 
-#ifndef OSX
-#include <opencv2/core/core.hpp>
-#endif
-
-//#include <unistd.h>
+#include <unistd.h>
 #include <string>
 
 #include "google/protobuf/message.h"
-#include "hdf5.h"
-#include "hdf5_hl.h"
 
 #include "caffe/blob.hpp"
+#include "caffe/common.hpp"
 #include "caffe/proto/caffe.pb.h"
-
-#define HDF5_NUM_DIMS 4
 
 namespace caffe {
 
@@ -47,7 +40,6 @@ using ::google::protobuf::Message;
 //  delete[] temp_dirname_cstr;
 //}
 
-
 bool CAFFE_DLL_EXPORT ReadProtoFromTextFile(const char* filename, Message* proto);
 
 inline bool ReadProtoFromTextFile(const string& filename, Message* proto) {
@@ -62,12 +54,12 @@ inline void ReadProtoFromTextFileOrDie(const string& filename, Message* proto) {
   ReadProtoFromTextFileOrDie(filename.c_str(), proto);
 }
 
-void CAFFE_DLL_EXPORT WriteProtoToTextFile(const Message& proto, const char* filename);
+void WriteProtoToTextFile(const Message& proto, const char* filename);
 inline void WriteProtoToTextFile(const Message& proto, const string& filename) {
   WriteProtoToTextFile(proto, filename.c_str());
 }
 
-bool CAFFE_DLL_EXPORT ReadProtoFromBinaryFile(const char* filename, Message* proto);
+bool ReadProtoFromBinaryFile(const char* filename, Message* proto);
 
 inline bool ReadProtoFromBinaryFile(const string& filename, Message* proto) {
   return ReadProtoFromBinaryFile(filename.c_str(), proto);
@@ -83,7 +75,7 @@ inline void ReadProtoFromBinaryFileOrDie(const string& filename,
 }
 
 
-void CAFFE_DLL_EXPORT WriteProtoToBinaryFile(const Message& proto, const char* filename);
+void WriteProtoToBinaryFile(const Message& proto, const char* filename);
 inline void WriteProtoToBinaryFile(
     const Message& proto, const string& filename) {
   WriteProtoToBinaryFile(proto, filename.c_str());
@@ -95,8 +87,15 @@ inline bool ReadFileToDatum(const string& filename, Datum* datum) {
   return ReadFileToDatum(filename, -1, datum);
 }
 
-bool CAFFE_DLL_EXPORT ReadImageToDatum(const string& filename, const int label,
-    const int height, const int width, const bool is_color, Datum* datum);
+bool ReadImageToDatum(const string& filename, const int label,
+    const int height, const int width, const bool is_color,
+    const std::string & encoding, Datum* datum);
+
+inline bool ReadImageToDatum(const string& filename, const int label,
+    const int height, const int width, const bool is_color, Datum* datum) {
+  return ReadImageToDatum(filename, label, height, width, is_color,
+                          "", datum);
+}
 
 inline bool ReadImageToDatum(const string& filename, const int label,
     const int height, const int width, Datum* datum) {
@@ -113,72 +112,29 @@ inline bool ReadImageToDatum(const string& filename, const int label,
   return ReadImageToDatum(filename, label, 0, 0, true, datum);
 }
 
-bool DecodeDatum(const int height, const int width, const bool is_color,
-  Datum* datum);
-
-inline bool DecodeDatum(const int height, const int width, Datum* datum) {
-  return DecodeDatum(height, width, true, datum);
+inline bool ReadImageToDatum(const string& filename, const int label,
+    const std::string & encoding, Datum* datum) {
+  return ReadImageToDatum(filename, label, 0, 0, true, encoding, datum);
 }
 
-inline bool DecodeDatum(const bool is_color, Datum* datum) {
-  return DecodeDatum(0, 0, is_color, datum);
-}
+bool DecodeDatumNative(Datum* datum);
+bool DecodeDatum(Datum* datum, bool is_color);
 
-inline bool DecodeDatum(Datum* datum) {
-  return DecodeDatum(0, 0, true, datum);
-}
-
-#ifndef OSX
 cv::Mat ReadImageToCVMat(const string& filename,
     const int height, const int width, const bool is_color);
 
-inline cv::Mat ReadImageToCVMat(const string& filename,
-    const int height, const int width) {
-  return ReadImageToCVMat(filename, height, width, true);
-}
+cv::Mat ReadImageToCVMat(const string& filename,
+    const int height, const int width);
 
-inline cv::Mat ReadImageToCVMat(const string& filename,
-    const bool is_color) {
-  return ReadImageToCVMat(filename, 0, 0, is_color);
-}
+cv::Mat ReadImageToCVMat(const string& filename,
+    const bool is_color);
 
-inline cv::Mat ReadImageToCVMat(const string& filename) {
-  return ReadImageToCVMat(filename, 0, 0, true);
-}
+cv::Mat ReadImageToCVMat(const string& filename);
 
-cv::Mat DecodeDatumToCVMat(const Datum& datum,
-    const int height, const int width, const bool is_color);
-
-inline cv::Mat DecodeDatumToCVMat(const Datum& datum,
-    const int height, const int width) {
-  return DecodeDatumToCVMat(datum, height, width, true);
-}
-
-inline cv::Mat DecodeDatumToCVMat(const Datum& datum,
-    const bool is_color) {
-  return DecodeDatumToCVMat(datum, 0, 0, is_color);
-}
-
-inline cv::Mat DecodeDatumToCVMat(const Datum& datum) {
-  return DecodeDatumToCVMat(datum, 0, 0, true);
-}
+cv::Mat DecodeDatumToCVMatNative(const Datum& datum);
+cv::Mat DecodeDatumToCVMat(const Datum& datum, bool is_color);
 
 void CVMatToDatum(const cv::Mat& cv_img, Datum* datum);
-#endif
-
-template <typename Dtype>
-void CAFFE_DLL_EXPORT hdf5_load_nd_dataset_helper(
-  hid_t file_id, const char* dataset_name_, int min_dim, int max_dim,
-  Blob<Dtype>* blob);
-
-template <typename Dtype>
-void CAFFE_DLL_EXPORT hdf5_load_nd_dataset(
-  hid_t file_id, const char* dataset_name_, int min_dim, int max_dim,
-  Blob<Dtype>* blob);
-
-template <typename Dtype>
-void hdf5_save_nd_dataset(
-  const hid_t file_id, const string dataset_name, const Blob<Dtype>& blob);
 
 }  // namespace caffe
 

@@ -9,6 +9,7 @@
 #include <set>
 #include <string>
 
+#include <climits>
 #include <cmath>
 #include <fstream>  // NOLINT(readability/streams)
 #include <iostream>  // NOLINT(readability/streams)
@@ -22,7 +23,7 @@
 #include "caffe/util/device_alternate.hpp"
 
 // gflags 2.1 issue: namespace google was changed to gflags without warning.
-// Luckily we will be able to use GFLAGS_GFAGS_H_ to detect if it is version
+// Luckily we will be able to use GFLAGS_GFLAGS_H_ to detect if it is version
 // 2.1. If yes, we will add a temporary solution to redirect the namespace.
 // TODO(Yangqing): Once gflags solves the problem in a more elegant way, let's
 // remove the following hack.
@@ -85,6 +86,9 @@ private:\
 // is executed we will see a fatal log.
 #define NOT_IMPLEMENTED LOG(FATAL) << "Not Implemented Yet"
 
+// See PR #1236
+namespace cv { class Mat; }
+
 namespace caffe {
 
 // We will use the boost shared_ptr instead of the new C++11 one mainly
@@ -125,15 +129,13 @@ void GlobalInit(int* pargc, char*** pargv);
 class CAFFE_DLL_EXPORT Caffe {
  public:
   ~Caffe();
-  inline static Caffe& Get() {
-    if (!singleton_.get()) {
-      singleton_.reset(new Caffe());
-    }
-    return *singleton_;
-  }
-  enum Brew { CPU, GPU };
-  enum Phase { TRAIN, TEST };
 
+  // Thread local context for Caffe. Moved to common.cpp instead of
+  // including boost/thread.hpp to avoid a boost/NVCC issues (#1009, #1010)
+  // on OSX. Also fails on Linux with CUDA 7.0.18.
+  static Caffe& Get();
+
+  enum Brew { CPU, GPU };
 
   // This random number generator facade hides boost and CUDA rng
   // implementation from one another (for cross-platform compatibility).
@@ -165,16 +167,12 @@ class CAFFE_DLL_EXPORT Caffe {
 
   // Returns the mode: running on CPU or GPU.
   inline static Brew mode() { return Get().mode_; }
-  // Returns the phase: TRAIN or TEST.
-  inline static Phase phase() { return Get().phase_; }
   // The setters for the variables
   // Sets the mode. It is recommended that you don't change the mode halfway
   // into the program since that may cause allocation of pinned memory being
   // freed in a non-pinned way, which may cause problems - I haven't verified
   // it personally but better to note it here in the header file.
   inline static void set_mode(Brew mode) { Get().mode_ = mode; }
-  // Sets the phase.
-  inline static void set_phase(Phase phase) { Get().phase_ = phase; }
   // Sets the random seed of both boost and curand
   static void set_random_seed(const unsigned int seed);
   // Sets the device. Since we have cublas and curand stuff, set device also
@@ -182,6 +180,11 @@ class CAFFE_DLL_EXPORT Caffe {
   static void SetDevice(const int device_id);
   // Prints the current GPU status.
   static void DeviceQuery();
+  // Parallel training info
+  inline static int solver_count() { return Get().solver_count_; }
+  inline static void set_solver_count(int val) { Get().solver_count_ = val; }
+  inline static bool root_solver() { return Get().root_solver_; }
+  inline static void set_root_solver(bool val) { Get().root_solver_ = val; }
 
  protected:
 #ifndef CPU_ONLY
@@ -191,8 +194,8 @@ class CAFFE_DLL_EXPORT Caffe {
   shared_ptr<RNG> random_generator_;
 
   Brew mode_;
-  Phase phase_;
-  static shared_ptr<Caffe> singleton_;
+  int solver_count_;
+  bool root_solver_;
 
  private:
   // The private constructor to avoid duplicate instantiation.

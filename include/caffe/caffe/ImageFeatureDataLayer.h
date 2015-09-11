@@ -3,6 +3,13 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 #include <list>
+#ifdef WIN32
+#define USE_PARALLEL
+#ifdef USE_PARALLEL
+#include <ppl.h>
+using namespace Concurrency;
+#endif
+#endif
 namespace caffe {
   template <typename Dtype>
   class ImageFeatureDataLayer : public BaseDataLayer<Dtype> {
@@ -15,9 +22,10 @@ namespace caffe {
     virtual void AddImageFeatureData(const std::list<cv::Mat>& src, const std::list<std::vector<float> >& features);
     virtual void AddImageFeatureData(const std::list<cv::Mat>& src);
 
-    virtual inline LayerParameter_LayerType type() const {
+    /*virtual inline LayerParameter_LayerType type() const {
       return LayerParameter_LayerType_IMAGE_FEATURE_DATA;
-    }
+    }*/
+    virtual inline const char* type() const { return "ImageFeatureData"; }
     virtual inline int ExactNumBottomBlobs() const { return 0; }
     virtual inline int ExactNumTopBlobs() const { return 2; }
 
@@ -43,5 +51,8 @@ namespace caffe {
     Blob<Dtype> label_blob_;
     std::auto_ptr<Dtype> data_;
     DISABLE_COPY_AND_ASSIGN(ImageFeatureDataLayer);
+#ifdef USE_PARALLEL
+    critical_section mutex;
+#endif
   };
 }
