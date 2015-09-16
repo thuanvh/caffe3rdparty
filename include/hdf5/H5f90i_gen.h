@@ -25,14 +25,16 @@
 #define c_int_2 short
 #define c_int_4 long
 #define c_int_8 long long
+#define c_size_t_8 size_t
+#define c_hsize_t_8 hsize_t
 #define c_float_4 float
 #define c_float_8 long double
 
 typedef c_int_8 haddr_t_f;
-typedef c_int_8 hsize_t_f;
+typedef c_hsize_t_8 hsize_t_f;
 typedef c_int_8 hssize_t_f;
 typedef c_int_4 off_t_f;
-typedef c_int_4 size_t_f;
+typedef c_size_t_8 size_t_f;
 typedef c_int_4 int_f;
 typedef c_int_1 int_1_f;
 typedef c_int_2 int_2_f;

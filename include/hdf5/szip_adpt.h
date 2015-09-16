@@ -14,19 +14,15 @@
   #define _SZDLL_
   #if defined (_MSC_VER)  /* MSVC Compiler Case */
     #define __SZ_DLL__ __declspec(dllexport)
-/*    #define __DLLVARH425__ __declspec(dllexport)*/
   #elif (__GNUC__ >= 4)  /* GCC 4.x has support for visibility options */
     #define __SZ_DLL__ __attribute__ ((visibility("default")))
-/*    #define __DLLVARH425__ extern __attribute__ ((visibility("default"))) */
   #endif
 #else
   #define _SZUSEDLL_
   #if defined (_MSC_VER)  /* MSVC Compiler Case */
     #define __SZ_DLL__ __declspec(dllimport)
-/*    #define __DLLVARH425__ __declspec(dllimport)*/
   #elif (__GNUC__ >= 4)  /* GCC 4.x has support for visibility options */
     #define __SZ_DLL__ __attribute__ ((visibility("default")))
-/*    #define __DLLVARH425__ extern __attribute__ ((visibility("default"))) */
   #endif
 #endif
 
