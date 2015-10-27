@@ -6,7 +6,6 @@
 
 #include "google/protobuf/message.h"
 
-#include "caffe/blob.hpp"
 #include "caffe/common.hpp"
 #include "caffe/proto/caffe.pb.h"
 
@@ -54,12 +53,12 @@ inline void ReadProtoFromTextFileOrDie(const string& filename, Message* proto) {
   ReadProtoFromTextFileOrDie(filename.c_str(), proto);
 }
 
-void WriteProtoToTextFile(const Message& proto, const char* filename);
+void CAFFE_DLL_EXPORT WriteProtoToTextFile(const Message& proto, const char* filename);
 inline void WriteProtoToTextFile(const Message& proto, const string& filename) {
   WriteProtoToTextFile(proto, filename.c_str());
 }
 
-bool ReadProtoFromBinaryFile(const char* filename, Message* proto);
+bool CAFFE_DLL_EXPORT ReadProtoFromBinaryFile(const char* filename, Message* proto);
 
 inline bool ReadProtoFromBinaryFile(const string& filename, Message* proto) {
   return ReadProtoFromBinaryFile(filename.c_str(), proto);
@@ -75,7 +74,7 @@ inline void ReadProtoFromBinaryFileOrDie(const string& filename,
 }
 
 
-void WriteProtoToBinaryFile(const Message& proto, const char* filename);
+void CAFFE_DLL_EXPORT WriteProtoToBinaryFile(const Message& proto, const char* filename);
 inline void WriteProtoToBinaryFile(
     const Message& proto, const string& filename) {
   WriteProtoToBinaryFile(proto, filename.c_str());
@@ -120,6 +119,7 @@ inline bool ReadImageToDatum(const string& filename, const int label,
 bool DecodeDatumNative(Datum* datum);
 bool DecodeDatum(Datum* datum, bool is_color);
 
+#ifdef USE_OPENCV
 cv::Mat ReadImageToCVMat(const string& filename,
     const int height, const int width, const bool is_color);
 
@@ -135,6 +135,7 @@ cv::Mat DecodeDatumToCVMatNative(const Datum& datum);
 cv::Mat DecodeDatumToCVMat(const Datum& datum, bool is_color);
 
 void CVMatToDatum(const cv::Mat& cv_img, Datum* datum);
+#endif  // USE_OPENCV
 
 }  // namespace caffe
 
