@@ -1263,9 +1263,18 @@ private:
   LogMessageData* data_;
 
   friend class LogDestination;
-
+#if defined(_MSC_VER)
+#   if _MSC_VER < 1900 
+  LogMessage(const LogMessage&);
+  void operator=(const LogMessage&);
+#   else
   LogMessage(const LogMessage&) = delete;
   void operator=(const LogMessage&) = delete;
+#   endif
+#elif __cplusplus <= 199711L
+#   error This project can only be compiled with a compiler that supports C++11
+#endif
+  
 };
 
 // This class happens to be thread-hostile because all instances share

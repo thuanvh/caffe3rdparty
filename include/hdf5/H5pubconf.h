@@ -15,37 +15,12 @@
 /* Define if using a Windows compiler (i.e. Visual Studio) */
 #define H5_HAVE_VISUAL_STUDIO 1
 
-/* Defined if HDF5 was built with CMake AND build as a shared library */
-#define H5_BUILT_AS_DYNAMIC_LIB 1
-
-/* Defined if HDF5 was built with CMake AND build as a static library */
-/* #undef H5_BUILT_AS_STATIC_LIB */
-
-/* Defined if HDF5 CPP  was built with CMake AND build as a shared library  */
-/* #undef H5_CPP_BUILT_AS_DYNAMIC_LIB */
-
-/* Defined if HDF5 CPP  was built with CMake AND build as a static library  */
-/* #undef H5_CPP_BUILT_AS_STATIC_LIB */
-
-/* Defined if HDF5 HL was built with CMake AND build as a shared library */
-/* #undef H5_HL_BUILT_AS_DYNAMIC_LIB */
-
-/* Defined if HDF5 HL was built with CMake AND build as a static library */
-/* #undef H5_HL_BUILT_AS_STATIC_LIB */
-
 /* Define if building universal (internal helper macro) */
 /* #undef H5_AC_APPLE_UNIVERSAL_BUILD */
-
-/* Define if your system generates wrong code for log2 routine. */
-/* #undef H5_BAD_LOG2_CODE_GENERATED */
 
 /* Define if the memory buffers being written to disk should be cleared before
    writing. */
 #define H5_CLEAR_MEMORY 1
-
-/* Define if your system can handle converting denormalized floating-point
-   values. */
-#define H5_CONVERT_DENORMAL_FLOAT 1
 
 /* Define if C++ compiler recognizes offsetof */
 /* #undef H5_CXX_HAVE_OFFSETOF */
@@ -69,10 +44,6 @@
 
 /* As FC_FUNC, but for C identifiers containing underscores. */
 #define H5_FC_FUNC_(name,NAME) NAME
-
-/* Define if your system can handle overflow converting floating-point to
-   integer values. */
-#define H5_FP_TO_INTEGER_OVERFLOW_WORKS 1
 
 /* Define to 1 if you have the `alarm' function. */
 /* #undef H5_HAVE_ALARM */
@@ -98,10 +69,6 @@
 
 /* Define if Darwin or Mac OS X */
 /* #undef H5_HAVE_DARWIN */
-
-/* Define to 1 if you have the declaration of `tzname', and to 0 if you don't.
-   */
-#define H5_HAVE_DECL_TZNAME 1
 
 /* Define to 1 if you have the `difftime' function. */
 #define H5_HAVE_DIFFTIME 1
@@ -178,21 +145,15 @@
 /* Define to 1 if you have the `gettimeofday' function. */
 #define H5_HAVE_GETTIMEOFDAY 1
 
-/* Define to 1 if you have the `gettimeofday' function declared in time.h . */
-/* #undef H5_HAVE_TIME_GETTIMEOFDAY */
-
-/* Define to 1 if you have the `gettimeofday' function declared in sys/time.h . */
-/* #undef H5_HAVE_SYS_TIME_GETTIMEOFDAY */
-
-/* Define to 1 if you have the `get_fpc_csr' function. */
-/* #undef H5_HAVE_GET_FPC_CSR */
+/* Define if the compiler understands inline */
+#define H5_HAVE_INLINE 1
 
 /* Define if library will contain instrumentation to detect correct
    optimization operation */
 /* #undef H5_HAVE_INSTRUMENTED_LIBRARY */
 
 /* Define to 1 if you have the <inttypes.h> header file. */
-/* #undef H5_HAVE_INTTYPES_H */
+#define H5_HAVE_INTTYPES_H 1
 
 /* Define to 1 if you have the `ioctl' function. */
 /* #undef H5_HAVE_IOCTL */
@@ -212,23 +173,8 @@
 /* Define to 1 if you have the `mpe' library (-lmpe). */
 /* #undef H5_HAVE_LIBMPE */
 
-/* Define to 1 if you have the `mpi' library (-lmpi). */
-/* #undef H5_HAVE_LIBMPI */
-
-/* Define to 1 if you have the `mpich' library (-lmpich). */
-/* #undef H5_HAVE_LIBMPICH */
-
-/* Define to 1 if you have the `mpio' library (-lmpio). */
-/* #undef H5_HAVE_LIBMPIO */
-
-/* Define to 1 if you have the `nsl' library (-lnsl). */
-/* #undef H5_HAVE_LIBNSL */
-
 /* Define to 1 if you have the `pthread' library (-lpthread). */
 /* #undef H5_HAVE_LIBPTHREAD */
-
-/* Define to 1 if you have the `socket' library (-lsocket). */
-/* #undef H5_HAVE_LIBSOCKET */
 
 /* Define to 1 if you have the `sz' library (-lsz). */
 #define H5_HAVE_LIBSZ 1
@@ -290,9 +236,6 @@
 /* Define to 1 if you have the `setsysinfo' function. */
 /* #undef H5_HAVE_SETSYSINFO */
 
-/* Define to 1 if you have the `sigaction' function. */
-/* #undef H5_HAVE_SIGACTION */
-
 /* Define to 1 if you have the `siglongjmp' function. */
 /* #undef H5_HAVE_SIGLONGJMP */
 
@@ -350,14 +293,8 @@
 /* Define to 1 if you have the `system' function. */
 #define H5_HAVE_SYSTEM 1
 
-/* Define to 1 if you have the <sys/fpu.h> header file. */
-/* #undef H5_HAVE_SYS_FPU_H */
-
 /* Define to 1 if you have the <sys/ioctl.h> header file. */
 /* #undef H5_HAVE_SYS_IOCTL_H */
-
-/* Define to 1 if you have the <sys/proc.h> header file. */
-/* #undef H5_HAVE_SYS_PROC_H */
 
 /* Define to 1 if you have the <sys/resource.h> header file. */
 /* #undef H5_HAVE_SYS_RESOURCE_H */
@@ -368,14 +305,8 @@
 /* Define to 1 if you have the <sys/stat.h> header file. */
 #define H5_HAVE_SYS_STAT_H 1
 
-/* Define to 1 if you have the <sys/sysinfo.h> header file. */
-/* #undef H5_HAVE_SYS_SYSINFO_H */
-
 /* Define to 1 if you have the <sys/timeb.h> header file. */
 #define H5_HAVE_SYS_TIMEB_H 1
-
-/* Define to 1 if you have the <time.h> header file. */
-#define H5_HAVE_TIME_H 1
 
 /* Define to 1 if you have the <sys/time.h> header file. */
 /* #undef H5_HAVE_SYS_TIME_H */
@@ -407,14 +338,11 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 /* #undef H5_HAVE_UNISTD_H */
 
-/* Define to 1 if you have the `asprintf' function. */
-/* #undef H5_HAVE_ASPRINTF */
-
 /* Define to 1 if you have the `vasprintf' function. */
 /* #undef H5_HAVE_VASPRINTF */
 
 /* Define to 1 if you have the `vsnprintf' function. */
-#define H5_HAVE_VSNPRINTF 1
+/* #undef H5_HAVE_VSNPRINTF */
 
 /* Define to 1 if you have the `waitpid' function. */
 /* #undef H5_HAVE_WAITPID */
@@ -434,9 +362,11 @@
 /* Define to 1 if you have the `_scrsize' function. */
 /* #undef H5_HAVE__SCRSIZE */
 
-/* Define if your system can't handle converting floating-point values to long
-   long. */
-/* #undef H5_HW_FP_TO_LLONG_NOT_WORKS */
+/* Define if the compiler understands __inline */
+#define H5_HAVE___INLINE 1
+
+/* Define if the compiler understands __inline__ */
+/* #undef H5_HAVE___INLINE__ */
 
 /* Define if HDF5's high-level library headers should be included in hdf5.h */
 #define H5_INCLUDE_HL 1
@@ -480,7 +410,7 @@
 #define H5_PACKAGE_NAME "HDF5"
 
 /* Define to the full name and version of this package. */
-#define H5_PACKAGE_STRING "HDF5 1.8.15-patch1"
+#define H5_PACKAGE_STRING "HDF5 1.8.16"
 
 /* Define to the one symbol short name of this package. */
 #define H5_PACKAGE_TARNAME "hdf5"
@@ -489,10 +419,10 @@
 #define H5_PACKAGE_URL "http://www.hdfgroup.org"
 
 /* Define to the version of this package. */
-#define H5_PACKAGE_VERSION "1.8.15-patch1"
+#define H5_PACKAGE_VERSION "1.8.16"
 
 /* Width for printf() for type `long long' or `__int64', use `ll' */
-#define H5_PRINTF_LL_WIDTH "ll"
+#define H5_PRINTF_LL_WIDTH "I64"
 
 /* The size of `char', as computed by sizeof. */
 #define H5_SIZEOF_CHAR 1
@@ -544,7 +474,7 @@
 
 #if !defined(__APPLE__)
 /* The size of `size_t', as computed by sizeof. */
-#define H5_SIZEOF_SIZE_T 8
+#define H5_SIZEOF_SIZE_T 4
 
 /* The size of `ssize_t', as computed by sizeof. */
 /* #undef H5_SIZEOF_SSIZE_T */
@@ -643,9 +573,6 @@
 /* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
 /* #undef H5_TIME_WITH_SYS_TIME */
 
-/* Define to 1 if your <sys/time.h> declares `struct tm'. */
-/* #undef H5_TM_IN_SYS_TIME */
-
 /* Define using v1.6 public API symbols by default */
 /* #undef H5_USE_16_API_DEFAULT */
 
@@ -655,7 +582,7 @@
 /* #undef H5_USING_MEMCHECKER */
 
 /* Version number of package */
-#define H5_VERSION "1.8.15-patch1"
+#define H5_VERSION "1.8.16"
 
 /* Data accuracy is prefered to speed during data conversions */
 #define H5_WANT_DATA_ACCURACY 1
@@ -686,12 +613,6 @@
 /* Define to empty if `const' does not conform to ANSI C. */
 /* #undef H5_const */
 
-/* Define to `__inline__' or `__inline' if that's what the C compiler
-   calls it, or to nothing if 'inline' is not supported under any name.  */
-#ifndef __cplusplus
-#define H5_inline __inline
-#endif
-
 /* Define to `long int' if <sys/types.h> does not define. */
 /* #undef H5_off_t */
 
@@ -703,9 +624,5 @@
 
 /* Define to `long' if <sys/types.h> does not define. */
 /* #undef H5_ssize_t */
-
-#if defined(__cplusplus) && defined(inline)
-#undef inline
-#endif
 
 #endif

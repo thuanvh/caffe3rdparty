@@ -22,6 +22,10 @@
 
 #include "caffe/util/device_alternate.hpp"
 
+// Convert macro to string
+#define STRINGIFY(m) #m
+#define AS_STRING(m) STRINGIFY(m)
+
 // gflags 2.1 issue: namespace google was changed to gflags without warning.
 // Luckily we will be able to use GFLAGS_GFLAGS_H_ to detect if it is version
 // 2.1. If yes, we will add a temporary solution to redirect the namespace.
@@ -122,7 +126,7 @@ using std::vector;
 
 // A global initialization function that you should call in your main function.
 // Currently it initializes google flags and google logging.
-void GlobalInit(int* pargc, char*** pargv);
+void CAFFE_DLL_EXPORT GlobalInit(int* pargc, char*** pargv);
 
 // A singleton class to hold common caffe stuff, such as the handler that
 // caffe is going to use for cublas, curand, etc.
